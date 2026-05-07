@@ -60,7 +60,7 @@ export const approveUser = async (req: AuthRequest, res: Response) => {
     });
 
     // Send the approval email
-    await sendApprovalEmail(user.email, user.name);
+    sendApprovalEmail(user.email, user.name).catch((err) => console.error("Email error:", err));
 
     return res.status(200).json({ success: true, message: "User approved and email sent" });
   } catch (error) {

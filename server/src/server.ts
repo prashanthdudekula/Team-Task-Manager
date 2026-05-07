@@ -6,6 +6,13 @@ const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
   try {
+    console.log("Starting server in", process.env.NODE_ENV, "mode...");
+    if (!process.env.DATABASE_URL) {
+      console.warn("⚠ DATABASE_URL is not defined in process.env!");
+    } else {
+      console.log("✓ DATABASE_URL found (length:", process.env.DATABASE_URL.length, ")");
+    }
+    
     // Test database connection
     await prisma.$connect();
     console.log("✓ Database connected successfully");
