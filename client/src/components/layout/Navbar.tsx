@@ -1,9 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Menu, Bell, Search } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
-import { useEffect } from 'react';
 import SearchPalette from '../search/SearchPalette';
 
 interface NavbarProps {

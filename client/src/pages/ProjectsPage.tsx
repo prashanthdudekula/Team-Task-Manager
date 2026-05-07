@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { projectsApi } from '../api/projects';
@@ -158,7 +158,7 @@ const ProjectsPage = () => {
       {/* Create Modal */}
       <Modal isOpen={createOpen} onClose={() => setCreateOpen(false)} title="New Project">
         <ProjectForm
-          onSuccess={(p) => {
+          onSuccess={() => {
             qc.invalidateQueries({ queryKey: ['projects'] });
             setCreateOpen(false);
           }}

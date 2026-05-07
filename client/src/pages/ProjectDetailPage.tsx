@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { projectsApi } from '../api/projects';
 import { tasksApi } from '../api/tasks';
@@ -13,14 +13,11 @@ import { SkeletonCard } from '../components/common/LoadingSpinner';
 import { ArrowLeft, Plus, Users, LayoutGrid, List, UserPlus } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
-import { useAuth } from '../context/AuthContext';
 import { StatusBadge, PriorityBadge } from '../components/common/Badge';
 
 const ProjectDetailPage = () => {
   const { id } = useParams<{ id: string }>();
-  const { user } = useAuth();
   const qc = useQueryClient();
-  const navigate = useNavigate();
   const [view, setView] = useState<'kanban' | 'list'>('kanban');
   const [taskModal, setTaskModal] = useState<{ open: boolean; status?: TaskStatus; task?: Task }>({ open: false });
   const [deleteTask, setDeleteTask] = useState<Task | null>(null);
@@ -40,7 +37,7 @@ const ProjectDetailPage = () => {
     enabled: !!id,
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (tasksData?.tasks) {
       setTasks(tasksData.tasks);
     }

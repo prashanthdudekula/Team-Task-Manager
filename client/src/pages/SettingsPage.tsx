@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
-import { User, Shield, Bell, Palette, Save, Loader2 } from 'lucide-react';
+import { User, Shield, Bell, Save, Loader2 } from 'lucide-react';
 import { userApi } from '../api/user';
 import { toast } from 'sonner';
 

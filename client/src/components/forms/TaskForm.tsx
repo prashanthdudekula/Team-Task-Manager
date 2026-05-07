@@ -6,7 +6,6 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Task, TaskStatus, ProjectMember } from '../../types';
 import { tasksApi } from '../../api/tasks';
 import { commentsApi } from '../../api/comments';
-import { useAuth } from '../../context/AuthContext';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 
@@ -29,9 +28,8 @@ interface TaskFormProps {
   onCancel: () => void;
 }
 
-const TaskForm = ({ projectId, members, task, defaultStatus, onSuccess, onCancel }: TaskFormProps) => {
+const TaskForm = ({ projectId, members, task, defaultStatus: _defaultStatus, onSuccess, onCancel }: TaskFormProps) => {
   const isEditing = !!task;
-  const { user } = useAuth();
   const qc = useQueryClient();
   const [comment, setComment] = useState('');
   const [addingComment, setAddingComment] = useState(false);
@@ -67,7 +65,6 @@ const TaskForm = ({ projectId, members, task, defaultStatus, onSuccess, onCancel
         const res = await tasksApi.create({
           ...data,
           projectId,
-          status: defaultStatus || 'TODO',
           dueDate: data.dueDate ? new Date(data.dueDate).toISOString() : undefined,
         });
         toast.success('Task created');

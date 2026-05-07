@@ -4,7 +4,6 @@ import {
   LayoutDashboard, FolderKanban, CheckSquare,
   Users, Settings, LogOut, X, Zap
 } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { useAuth } from '../../context/AuthContext';
 import { toast } from 'sonner';
 
