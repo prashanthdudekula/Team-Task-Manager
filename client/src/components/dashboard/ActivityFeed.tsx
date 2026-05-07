@@ -1,4 +1,3 @@
-import React from 'react';
 import { Task } from '../../types';
 import { GitBranch } from 'lucide-react';
 import { StatusBadge } from '../common/Badge';
@@ -32,7 +31,7 @@ const ActivityFeed = ({ tasks }: ActivityFeedProps) => {
 
   return (
     <div className="space-y-3">
-      {tasks.slice(0, 8).map((task, i) => (
+      {tasks.slice(0, 8).map((task) => (
         <div key={task.id} className="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-700/30 transition-colors">
           <div className="w-8 h-8 bg-indigo-600/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
             <GitBranch size={14} className="text-indigo-400" />

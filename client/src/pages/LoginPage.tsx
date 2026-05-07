@@ -22,7 +22,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [showPwd, setShowPwd] = useState(false);
 
-  const { register, handleSubmit, formState: { errors, isSubmitting }, setValue } = useForm<FormData>({
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
 

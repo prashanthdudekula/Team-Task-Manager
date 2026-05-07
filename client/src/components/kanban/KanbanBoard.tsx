@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import { Task, TaskStatus } from '../../types';
-import { PriorityBadge, StatusBadge } from '../common/Badge';
-import { Calendar, MessageSquare, User, Plus, MoreVertical, Pencil, Trash2 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { PriorityBadge } from '../common/Badge';
+import { Calendar, MessageSquare, Plus, MoreVertical, Pencil, Trash2 } from 'lucide-react';
 import { tasksApi } from '../../api/tasks';
 import { toast } from 'sonner';
 
