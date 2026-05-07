@@ -15,6 +15,7 @@
 - **Responsive UI** — Mobile drawer, flexible grid layouts, and adaptive sidebar
 - **Dark SaaS Design** — Polished dark theme with Tailwind CSS & Framer Motion animations
 - **Toast Notifications** — Real-time feedback via Sonner
+- **Global Search (⌘K)** — High-performance Command Palette to find anything instantly
 - **Loading Skeletons** — Professional shimmer loading states
 
 ---
@@ -141,21 +142,22 @@ VITE_API_URL=http://localhost:5000/api
 | GET | `/api/comments/:taskId` | Get task comments |
 | DELETE | `/api/comments/:id` | Delete comment |
 
+### Search
+| Method | Route | Description |
+|--------|-------|-------------|
+| GET | `/api/search` | Global multi-category search |
+
 ---
 
 ## Deployment
 
-### Railway (Backend + Database)
-1. Create a new Railway project
-2. Add a PostgreSQL plugin
-3. Deploy the `server/` folder
-4. Set environment variables in Railway dashboard
-5. Run `npx prisma migrate deploy` after first deploy
-
-### Vercel (Frontend)
-1. Import the `client/` folder in Vercel
-2. Set `VITE_API_URL` to your Railway backend URL
-3. Deploy
+### Railway (One-Click Deployment)
+1. Create a new Railway project from your GitHub repo.
+2. Railway will automatically detect the `railway.json` and `Procfile`.
+3. Add a **PostgreSQL** plugin.
+4. Set the **Root Directory** for your backend service to `/server` and frontend to `/client`.
+5. Add your Environment Variables (see below).
+6. Run `npx prisma db push` locally to sync the schema.
 
 ---
 
