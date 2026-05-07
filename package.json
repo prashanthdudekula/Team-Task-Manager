@@ -8,6 +8,8 @@
     "install:all": "cd server && npm install && cd ../client && npm install",
     "build:server": "cd server && npm run build",
     "build:client": "cd client && npm run build",
+    "build": "npm run build:server",
+    "start": "cd server && npm run start",
     "prisma:migrate": "cd server && npx prisma migrate dev",
     "prisma:generate": "cd server && npx prisma generate",
     "prisma:studio": "cd server && npx prisma studio"
