@@ -25,8 +25,10 @@ export const getTasksByProject = async (req: AuthRequest, res: Response) => {
       });
     }
 
+    const isAdmin = req.user?.role === "ADMIN";
     const isMember = project.members.some((m) => m.userId === req.user?.id);
-    if (!isMember) {
+    
+    if (!isMember && !isAdmin) {
       return res.status(403).json({
         success: false,
         message: "Forbidden",
@@ -105,8 +107,10 @@ export const createTask = async (req: AuthRequest, res: Response) => {
       });
     }
 
+    const isAdmin = req.user?.role === "ADMIN";
     const isMember = project.members.some((m) => m.userId === req.user?.id);
-    if (!isMember) {
+    
+    if (!isMember && !isAdmin) {
       return res.status(403).json({
         success: false,
         message: "Forbidden",
@@ -179,8 +183,10 @@ export const updateTask = async (req: AuthRequest, res: Response) => {
       });
     }
 
+    const isAdmin = req.user?.role === "ADMIN";
     const isMember = task.project.members.some((m) => m.userId === req.user?.id);
-    if (!isMember) {
+    
+    if (!isMember && !isAdmin) {
       return res.status(403).json({
         success: false,
         message: "Forbidden",
@@ -246,8 +252,10 @@ export const deleteTask = async (req: AuthRequest, res: Response) => {
       });
     }
 
+    const isAdmin = req.user?.role === "ADMIN";
     const isMember = task.project.members.some((m) => m.userId === req.user?.id);
-    if (!isMember) {
+    
+    if (!isMember && !isAdmin) {
       return res.status(403).json({
         success: false,
         message: "Forbidden",

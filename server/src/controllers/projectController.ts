@@ -209,8 +209,10 @@ export const updateProject = async (req: AuthRequest, res: Response) => {
       });
     }
 
-    const member = project.members.find((m) => m.userId === req.user?.id);
-    if (!member || member.role !== "ADMIN") {
+    const isProjectAdmin = project.members.some((m) => m.userId === req.user?.id && m.role === "ADMIN");
+    const isGlobalAdmin = req.user?.role === "ADMIN";
+
+    if (!isProjectAdmin && !isGlobalAdmin) {
       return res.status(403).json({
         success: false,
         message: "Only admins can update projects",
@@ -271,8 +273,10 @@ export const deleteProject = async (req: AuthRequest, res: Response) => {
       });
     }
 
-    const member = project.members.find((m) => m.userId === req.user?.id);
-    if (!member || member.role !== "ADMIN") {
+    const isProjectAdmin = project.members.some((m) => m.userId === req.user?.id && m.role === "ADMIN");
+    const isGlobalAdmin = req.user?.role === "ADMIN";
+
+    if (!isProjectAdmin && !isGlobalAdmin) {
       return res.status(403).json({
         success: false,
         message: "Only admins can delete projects",
