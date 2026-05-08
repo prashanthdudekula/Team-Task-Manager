@@ -1,7 +1,5 @@
 # TeamFlow — Enterprise Grade Team Task Manager
 
->ADMIN MAIL:prashanthdudekula@gmail.com
->PASSWORD:prashanth
 
 >LIVE URL:https://magnificent-adaptation-production-22f4.up.railway.app
 
