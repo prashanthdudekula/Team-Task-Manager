@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useAuth } from '../context/AuthContext';
 import { projectsApi } from '../api/projects';
 import { tasksApi } from '../api/tasks';
 import { Task, TaskStatus } from '../types';
@@ -24,6 +25,7 @@ const ProjectDetailPage = () => {
   const [deleting, setDeleting] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [addMemberModal, setAddMemberModal] = useState(false);
+  const { user } = useAuth();
 
   const { data: projectData, isLoading: projectLoading } = useQuery({
     queryKey: ['project', id],
@@ -45,6 +47,10 @@ const ProjectDetailPage = () => {
 
   const project = projectData?.project;
   const members = project?.members || [];
+  
+  const isProjectAdmin = members.some(m => m.userId === user?.id && m.role === 'ADMIN');
+  const isGlobalAdmin = user?.role === 'ADMIN';
+  const canManage = isProjectAdmin || isGlobalAdmin;
 
   const handleDeleteTask = async () => {
     if (!deleteTask) return;
@@ -95,12 +101,14 @@ const ProjectDetailPage = () => {
                 <Users size={13} />
                 {members.length} member{members.length !== 1 ? 's' : ''}
               </span>
-              <button
-                onClick={() => setAddMemberModal(true)}
-                className="flex items-center gap-1 text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
-              >
-                <UserPlus size={13} /> Add Member
-              </button>
+              {canManage && (
+                <button
+                  onClick={() => setAddMemberModal(true)}
+                  className="flex items-center gap-1 text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
+                >
+                  <UserPlus size={13} /> Add Member
+                </button>
+              )}
               <div className="flex items-center gap-2 text-xs text-slate-400">
                 <div className="w-24 bg-slate-700 rounded-full h-1.5 overflow-hidden">
                   <div
@@ -130,12 +138,14 @@ const ProjectDetailPage = () => {
               <List size={15} />
             </button>
           </div>
-          <button
-            onClick={() => setTaskModal({ open: true })}
-            className="btn-primary flex items-center gap-2 text-sm"
-          >
-            <Plus size={15} /> Add Task
-          </button>
+          {canManage && (
+            <button
+              onClick={() => setTaskModal({ open: true })}
+              className="btn-primary flex items-center gap-2 text-sm"
+            >
+              <Plus size={15} /> Add Task
+            </button>
+          )}
         </div>
       </div>
 

@@ -36,10 +36,12 @@ export const addMember = async (req: AuthRequest, res: Response) => {
     }
 
     const currentMember = project.members.find((m) => m.userId === req.user?.id);
-    if (!currentMember || currentMember.role !== "ADMIN") {
+    const isGlobalAdmin = req.user?.role === "ADMIN";
+
+    if (!isGlobalAdmin && (!currentMember || currentMember.role !== "ADMIN")) {
       return res.status(403).json({
         success: false,
-        message: "Only admins can add members",
+        message: "Only project or system admins can add members",
       });
     }
 
@@ -116,10 +118,12 @@ export const removeMember = async (req: AuthRequest, res: Response) => {
     }
 
     const currentMember = project.members.find((m) => m.userId === req.user?.id);
-    if (!currentMember || currentMember.role !== "ADMIN") {
+    const isGlobalAdmin = req.user?.role === "ADMIN";
+
+    if (!isGlobalAdmin && (!currentMember || currentMember.role !== "ADMIN")) {
       return res.status(403).json({
         success: false,
-        message: "Only admins can remove members",
+        message: "Only project or system admins can remove members",
       });
     }
 
@@ -181,7 +185,9 @@ export const getProjectMembers = async (req: AuthRequest, res: Response) => {
     }
 
     const isMember = project.members.some((m) => m.userId === req.user?.id);
-    if (!isMember) {
+    const isGlobalAdmin = req.user?.role === "ADMIN";
+
+    if (!isMember && !isGlobalAdmin) {
       return res.status(403).json({
         success: false,
         message: "Forbidden",

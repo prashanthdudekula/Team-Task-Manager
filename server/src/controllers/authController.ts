@@ -1,9 +1,12 @@
 import { Request, Response } from "express";
-import bcryptjs from "bcryptjs";
+import bcryptjsModule from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { prisma } from "../config/database.js";
 import { registerSchema, loginSchema } from "../validators/index.js";
 import { AuthRequest, UserPayload } from "../types/index.js";
+
+// Handle CJS/ESM interop: bcryptjs is a CJS module
+const bcrypt = (bcryptjsModule as any).default || bcryptjsModule;
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -28,7 +31,7 @@ export const register = async (req: Request, res: Response) => {
       });
     }
 
-    const hashedPassword = await bcryptjs.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await prisma.user.create({
       data: {
@@ -95,7 +98,7 @@ export const login = async (req: Request, res: Response) => {
       });
     }
 
-    const isPasswordValid = await bcryptjs.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
       return res.status(401).json({

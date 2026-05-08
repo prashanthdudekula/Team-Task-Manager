@@ -36,6 +36,7 @@ const DashboardPage = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['dashboard-stats', isGlobal],
     queryFn: () => dashboardApi.getStats(isGlobal),
+    refetchInterval: 30000, // Refresh every 30 seconds for live updates
   });
 
   const stats = data?.stats;

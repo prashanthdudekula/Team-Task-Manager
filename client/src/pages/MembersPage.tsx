@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { projectsApi } from '../api/projects';
 import { userApi } from '../api/user';
@@ -8,11 +9,15 @@ import { RoleBadge } from '../components/common/Badge';
 import EmptyState from '../components/common/EmptyState';
 import { SkeletonCard } from '../components/common/LoadingSpinner';
 import { toast } from 'sonner';
+import AssignProjectModal from '../components/modals/AssignProjectModal';
 
 const MembersPage = () => {
   const { user } = useAuth();
   const qc = useQueryClient();
   const isAdmin = user?.role === 'ADMIN';
+  const [assignModal, setAssignModal] = useState<{ open: boolean; userId: string; userName: string; existingProjects: string[] }>({ 
+    open: false, userId: '', userName: '', existingProjects: [] 
+  });
 
   const { data: projectsData, isLoading: projectsLoading } = useQuery({
     queryKey: ['projects'],
@@ -68,7 +73,7 @@ const MembersPage = () => {
   const pendingUsers = pendingData?.users || [];
   const allUsers = allUsersData?.users || [];
 
-  const membersMap = new Map<string, { user: any; projects: { title: string; role: string }[] }>();
+  const membersMap = new Map<string, { user: any; projects: { id: string; title: string; role: string }[] }>();
   
   if (isAdmin) {
     allUsers.forEach(u => {
@@ -81,7 +86,7 @@ const MembersPage = () => {
       if (!membersMap.has(m.userId)) {
         membersMap.set(m.userId, { user: m.user, projects: [] });
       }
-      membersMap.get(m.userId)!.projects.push({ title: project.title, role: m.role });
+      membersMap.get(m.userId)!.projects.push({ id: project.id, title: project.title, role: m.role });
     });
   });
 
@@ -170,6 +175,17 @@ const MembersPage = () => {
                   {isAdmin && mUser.id !== user?.id && (
                     <div className="flex flex-col gap-1">
                       <button
+                        onClick={() => setAssignModal({ 
+                          open: true, 
+                          userId: mUser.id, 
+                          userName: mUser.name, 
+                          existingProjects: memberProjects.map(p => p.id) 
+                        })}
+                        className="text-[10px] px-2 py-1 bg-indigo-600/10 text-indigo-400 border border-indigo-400/20 rounded hover:bg-indigo-600/20 transition-all uppercase font-bold"
+                      >
+                        Assign Project
+                      </button>
+                      <button
                         onClick={() => handleUpdateUser(mUser.id, { role: mUser.role === 'ADMIN' ? 'MEMBER' : 'ADMIN' })}
                         className="text-[10px] px-2 py-1 bg-slate-800 text-indigo-400 border border-indigo-400/20 rounded hover:bg-indigo-400/10 transition-all uppercase font-bold"
                       >
@@ -209,6 +225,20 @@ const MembersPage = () => {
           </div>
         )}
       </div>
+
+      {isAdmin && (
+        <AssignProjectModal
+          isOpen={assignModal.open}
+          onClose={() => setAssignModal(prev => ({ ...prev, open: false }))}
+          userId={assignModal.userId}
+          userName={assignModal.userName}
+          existingProjectIds={assignModal.existingProjects}
+          onSuccess={() => {
+            qc.invalidateQueries({ queryKey: ['projects'] });
+            qc.invalidateQueries({ queryKey: ['allUsers'] });
+          }}
+        />
+      )}
     </div>
   );
 };

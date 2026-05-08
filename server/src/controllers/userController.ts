@@ -3,6 +3,10 @@ import { prisma } from "../config/database.js";
 import { AuthRequest } from "../types/index.js";
 import { sendApprovalEmail } from "../services/emailService.js";
 import { updateUserSchema } from "../validators/index.js";
+import bcryptjsModule from "bcryptjs";
+
+// Handle CJS/ESM interop: bcryptjs is a CJS module
+const bcrypt = (bcryptjsModule as any).default || bcryptjsModule;
 
 export const getAllUsers = async (req: AuthRequest, res: Response) => {
   try {
@@ -163,9 +167,7 @@ export const changePassword = async (req: AuthRequest, res: Response) => {
       });
     }
 
-    // Dynamic import for bcryptjs
-    const bcryptjs = await import("bcryptjs");
-    const isValid = await bcryptjs.default.compare(currentPassword, user.password);
+    const isValid = await bcrypt.compare(currentPassword, user.password);
 
     if (!isValid) {
       return res.status(400).json({
@@ -174,7 +176,7 @@ export const changePassword = async (req: AuthRequest, res: Response) => {
       });
     }
 
-    const hashedPassword = await bcryptjs.default.hash(newPassword, 10);
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
 
     await prisma.user.update({
       where: { id: req.user.id },

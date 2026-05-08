@@ -1,5 +1,9 @@
+/// <reference types="node" />
 import { PrismaClient } from "@prisma/client";
-import bcryptjs from "bcryptjs";
+import bcryptjsModule from "bcryptjs";
+
+// Handle CJS/ESM interop: bcryptjs is a CJS module
+const bcryptjs = (bcryptjsModule as any).default || bcryptjsModule;
 
 const prisma = new PrismaClient();
 
