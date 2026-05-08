@@ -1,5 +1,8 @@
 # TeamFlow — Enterprise Grade Team Task Manager
 
+>ADMIN MAIL:prashanthdudekula@gmail.com
+>PASSWORD:prashanth
+
 >LIVE URL:https://magnificent-adaptation-production-22f4.up.railway.app
 
 > A production-quality full-stack SaaS project management application built with React, Node.js, Prisma, and PostgreSQL.
