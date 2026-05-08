@@ -76,6 +76,9 @@ export interface Task {
     name: string;
     email: string;
   };
+  project?: {
+    title: string;
+  };
   createdAt: string;
   updatedAt: string;
 }
